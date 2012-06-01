@@ -6,6 +6,7 @@
 //  ColorVoices plugin
 //
 //  Copyright (C)2011 Charles Cave   (charlesweb@optusnet.com.au)
+//  Copyright (C)2012 Joachim Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -36,44 +37,45 @@ var Black = new QColor(0, 0, 0);
 var voiceColor;
 
 function init()
-      {
-      }
+{
+}
 
-function run() {
-    var cursor = new Cursor(curScore);
+function run()
+{
+   var cursor = new Cursor(curScore);
 
    for (var staff = 0; staff < curScore.staves; ++staff) {
-       cursor.staff = staff;
-       for (var v = 0; v < 3; v++) {
-           cursor.voice = v;
-           cursor.rewind(); 
-           switch (v)
-           {
-           case 0:
+      cursor.staff = staff;
+      for (var v = 0; v < 4; v++) {
+         cursor.voice = v;
+         cursor.rewind(); 
+         switch (v)
+         {
+            case 0:
                voiceColor = new QColor(Blue);
                break;
-           case 1:
+            case 1:
                voiceColor = new QColor(Green);
                break;
-           case 2:
+            case 2:
                voiceColor = new QColor(Gold);
                break;
-           case 3:
+            case 3:
                voiceColor = new QColor(Red);
                break;
-           }
+         }
                
-          while (!cursor.eos()) {
-              if (cursor.isChord()) {
-                  var chord = cursor.chord();
-                  var n     = chord.notes;
-                  for (var i = 0; i < n; i++) {
-                      var note = chord.note(i);
-                      note.color = voiceColor;
-                  }
-              }
+         while (!cursor.eos()) {
+            if (cursor.isChord()) {
+               var chord = cursor.chord();
+               var n     = chord.notes;
+               for (var i = 0; i < n; i++) {
+                  var note = chord.note(i);
+                  note.color = voiceColor;
+               }
+            }
             cursor.next();
-          }
+         }
       }
    }
 }
@@ -82,6 +84,6 @@ var mscorePlugin = {
       menu: 'Plugins.Notes.ColorVoices',
       init: init,
       run:  run
-      };
+};
 
 mscorePlugin;
