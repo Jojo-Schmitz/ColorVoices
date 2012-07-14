@@ -29,7 +29,7 @@ import MuseScore 1.0
 
 
 MuseScore {
-   menuPath: 'Plugins.Notes.ColorVoices'
+   menuPath: 'Plugins.Notes.Color voices'
    onRun: {
       if (typeof curScore === 'undefined')
          Qt.quit();
