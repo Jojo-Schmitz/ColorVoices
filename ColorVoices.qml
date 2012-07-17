@@ -29,6 +29,8 @@ import MuseScore 1.0
 
 
 MuseScore {
+   version: "1.0"
+   description: "This plugin colors the notes of each voice"
    menuPath: 'Plugins.Notes.Color voices'
    onRun: {
       if (typeof curScore === 'undefined')
