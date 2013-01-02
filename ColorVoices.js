@@ -6,7 +6,7 @@
 //  ColorVoices plugin
 //
 //  Copyright (C)2011 Charles Cave   (charlesweb@optusnet.com.au)
-//  Copyright (C)2012 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012, 2013 Joachim Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -21,20 +21,18 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
-// 2011-10-20 ColorVoices
+// 02Jan2013 ColorVoices
 // The purpose of this plugin is to color the notes of each voice.
-// Voice 1 - Blue    26  12 255 
-// Voice 2 - Green   25 117 6
-// Voice 3 - Gold   255 160 0 
-// Voice 4 - Red    232  30 22
+// Voice 1 - Blue     0   0 255 
+// Voice 2 - Green    0 150   0
+// Voice 3 - Yellow 230 180  50
+// Voice 4 - Purple 200   0 200
 
-var Blue  = new QColor(26, 12, 255);
-var Green = new QColor(25, 117, 6);
-var Gold   = new QColor(255, 160, 0);
-var Red   = new QColor(232, 30, 22);
-var Black = new QColor(0, 0, 0);
-
-var voiceColor;
+var Blue   = new QColor(  0,   0, 255);
+var Green  = new QColor(  0, 150,   0);
+var Yellow = new QColor(230, 180,   0);
+var Purple = new QColor(200,   0, 200);
+var Black  = new QColor(  0,   0,   0);
 
 function init()
 {
@@ -49,10 +47,11 @@ function run()
 
    for (var staff = 0; staff < curScore.staves; ++staff) {
       cursor.staff = staff;
-      for (var v = 0; v < 4; v++) {
-         cursor.voice = v;
+      for (var voice = 0; voice < 4; voice++) {
+         var voiceColor;
+         cursor.voice = voice;
          cursor.rewind(); 
-         switch (v)
+         switch (voice)
          {
             case 0:
                voiceColor = new QColor(Blue);
@@ -61,10 +60,10 @@ function run()
                voiceColor = new QColor(Green);
                break;
             case 2:
-               voiceColor = new QColor(Gold);
+               voiceColor = new QColor(Yellow);
                break;
             case 3:
-               voiceColor = new QColor(Red);
+               voiceColor = new QColor(Purple);
                break;
          }
                

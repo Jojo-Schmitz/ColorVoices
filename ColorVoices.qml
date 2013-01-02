@@ -6,7 +6,7 @@
 //  ColorVoices plugin
 //
 //  Copyright (C)2011 Charles Cave   (charlesweb@optusnet.com.au)
-//  Copyright (C)2012 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012, 2013 Joachim Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -21,7 +21,7 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
-// 2011-10-20 ColorVoices
+// 02Jan2013 ColorVoices
 // The purpose of this plugin is to color the notes of each voice.
 
 import QtQuick 1.0
@@ -38,10 +38,10 @@ MuseScore {
 
       var cursor = curScore.newCursor();
       var colors = [
-         "#1a0cff", // Voice 1 - Blue    26  12 255
-         "#197506", // Voice 2 - Green   25 117   6
-         "#ffa000", // Voice 3 - Gold   255 160   0
-         "#e81e16", // Voice 4 - Red    232  30  22
+         "#0000ff", // Voice 1 - Blue     0   0 255
+         "#009600", // Voice 2 - Green    0 150   0
+         "#e6b432", // Voice 3 - Yellow 230 180  50
+         "#c800c8", // Voice 4 - Purple 200   0 200
          "#000000"  // Black (shouldn't happen)
          ];
 
