@@ -48,24 +48,9 @@ function run()
    for (var staff = 0; staff < curScore.staves; ++staff) {
       cursor.staff = staff;
       for (var voice = 0; voice < 4; voice++) {
-         var voiceColor;
+         var voiceColor = [ Blue, Green, Yellow, Purple, Black ];
          cursor.voice = voice;
          cursor.rewind(); 
-         switch (voice)
-         {
-            case 0:
-               voiceColor = Blue;
-               break;
-            case 1:
-               voiceColor = Green;
-               break;
-            case 2:
-               voiceColor = Yellow;
-               break;
-            case 3:
-               voiceColor = Purple;
-               break;
-         }
                
          while (!cursor.eos()) {
             if (cursor.isChord()) {
@@ -73,7 +58,7 @@ function run()
                var n     = chord.notes;
                for (var i = 0; i < n; i++) {
                   var note = chord.note(i);
-                  note.color = voiceColor;
+                  note.color = voiceColor[voice%4];
                }
             }
             cursor.next();
