@@ -54,16 +54,16 @@ function run()
          switch (voice)
          {
             case 0:
-               voiceColor = new QColor(Blue);
+               voiceColor = Blue;
                break;
             case 1:
-               voiceColor = new QColor(Green);
+               voiceColor = Green;
                break;
             case 2:
-               voiceColor = new QColor(Yellow);
+               voiceColor = Yellow;
                break;
             case 3:
-               voiceColor = new QColor(Purple);
+               voiceColor = Purple;
                break;
          }
                
