@@ -30,7 +30,7 @@
 
 var Blue   = new QColor(  0,   0, 255);
 var Green  = new QColor(  0, 150,   0);
-var Yellow = new QColor(230, 180,   0);
+var Yellow = new QColor(230, 180,  50);
 var Purple = new QColor(200,   0, 200);
 var Black  = new QColor(  0,   0,   0);
 
