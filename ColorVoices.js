@@ -44,15 +44,27 @@ function run()
       return;
 
    var cursor = new Cursor(curScore);
+   cursor.goToSelectionStart();
+   var startStaff = cursor.staff;
+   cursor.goToSelectionEnd();
+   var endStaff   = cursor.staff;
+   var endTick    = cursor.tick(); // if no selection, go to end of score
 
-   for (var staff = 0; staff < curScore.staves; ++staff) {
-      cursor.staff = staff;
+   if (cursor.eos()) { // if no selection
+      startStaff = 0; // start with 1st staff
+      endStaff = curScore.staves; // and end with last
+   }
+
+   for (var staff = startStaff; staff < endStaff; ++staff) {
       for (var voice = 0; voice < 4; voice++) {
          var voiceColor = [ Blue, Green, Yellow, Purple, Black ];
+         cursor.goToSelectionStart();
+         cursor.staff = staff;
          cursor.voice = voice;
-         cursor.rewind(); 
-               
-         while (!cursor.eos()) {
+         if (cursor.eos())
+            cursor.rewind(); // if no selection, start at beginning of score
+
+         while (cursor.tick() < endTick) {
             if (cursor.isChord()) {
                var chord = cursor.chord();
                var n     = chord.notes;
