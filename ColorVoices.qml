@@ -60,6 +60,13 @@ MuseScore {
                      note.color = colors[cursor.voice % 4];
                }
             }
+            else if (cursor.element && cursor.element.type == Element.REST) {
+               var rest = cursor.element;
+               if (rest.color != "#000000")
+                  rest.color = "#000000";
+               else
+                  rest.color = colors[cursor.voice % 4];
+            }
             cursor.next();
          }
       } // end loop tracks
