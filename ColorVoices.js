@@ -70,7 +70,10 @@ function run()
                var n     = chord.notes;
                for (var i = 0; i < n; i++) {
                   var note = chord.note(i);
-                  note.color = voiceColor[voice%4];
+                  if (note.color != Black)
+                     note.color = Black;
+                  else
+                     note.color = voiceColor[voice%4];
                }
             }
             cursor.next();

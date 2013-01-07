@@ -54,7 +54,10 @@ MuseScore {
                var notes = cursor.element.notes;
                for (var i = 0; i < notes.length; i++) {
                   var note = notes[i];
-                  note.color = colors[cursor.voice % 4];
+                  if (note.color != "#000000")
+                     note.color = "#000000";
+                  else
+                     note.color = colors[cursor.voice % 4];
                }
             }
             cursor.next();
