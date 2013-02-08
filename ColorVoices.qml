@@ -32,44 +32,63 @@ MuseScore {
    version: "1.0"
    description: "This plugin colors the notes of each voice"
    menuPath: 'Plugins.Notes.Color voices'
-   onRun: {
-      if (typeof curScore === 'undefined')
-         Qt.quit();
 
-      var cursor = curScore.newCursor();
-      var colors = [
+   property variant colors : [
          "#0000ff", // Voice 1 - Blue     0   0 255
          "#009600", // Voice 2 - Green    0 150   0
          "#e6b432", // Voice 3 - Yellow 230 180  50
          "#c800c8", // Voice 4 - Purple 200   0 200
-         "#000000"  // Black (shouldn't happen)
-         ];
+         "#000000"  // Black
+         ]
 
-      for (var track = 0; track < curScore.ntracks; ++track) {
-         cursor.track = track;
-         cursor.rewind(0); 
-               
-         while (cursor.segment) {
+   onRun: {
+      if (typeof curScore === 'undefined')
+        Qt.quit();
+
+      var cursor = curScore.newCursor();
+      cursor.rewind(1);
+      var startStaff  = cursor.staffIdx;
+      cursor.rewind(2);
+      var endStaff   = cursor.staffIdx;
+      var endTick    = cursor.tick // if no selection, end of score
+      var fullScore = false;
+      if (!cursor.segment) { // no selection
+        fullScore = true;
+        startStaff = 0; // start with 1st staff
+        endStaff = curScore.nstaves; // and end with last
+      }
+      console.log(startStaff + " - " + endStaff + " - " + endTick)
+      for (var staff = startStaff; staff <= endStaff; staff++) {
+        for (var voice = 0; voice < 4; voice++) {          
+          cursor.rewind(1); // sets voice to 0
+          cursor.voice = voice; //voice has to be set after goTo
+          cursor.staffIdx = staff;
+
+          if (fullScore)
+            cursor.rewind(0) // if no selection, beginning of score
+
+          while (cursor.segment && (fullScore || cursor.tick < endTick)) {
             if (cursor.element && cursor.element.type == Element.CHORD) {
                var notes = cursor.element.notes;
                for (var i = 0; i < notes.length; i++) {
                   var note = notes[i];
-                  if (note.color != "#000000")
-                     note.color = "#000000";
+                  if (note.color != colors[4])
+                     note.color = colors[4];
                   else
                      note.color = colors[cursor.voice % 4];
                }
             }
             else if (cursor.element && cursor.element.type == Element.REST) {
                var rest = cursor.element;
-               if (rest.color != "#000000")
-                  rest.color = "#000000";
+               if (rest.color != colors[4])
+                  rest.color = colors[4];
                else
                   rest.color = colors[cursor.voice % 4];
             }
             cursor.next();
-         }
-      } // end loop tracks
+          }
+        } // end loop voices
+      } // end loop staves
 
       Qt.quit();
    } // end onRun
