@@ -24,7 +24,7 @@
 // 02Jan2013 ColorVoices
 // The purpose of this plugin is to color the notes of each voice.
 
-import QtQuick 1.0
+import QtQuick 2.0
 import MuseScore 1.0
 
 
@@ -41,11 +41,14 @@ MuseScore {
          "#000000"  // Black
          ]
 
+   Cursor {
+      id: cursor
+      score: curScore
+   }
    onRun: {
       if (typeof curScore === 'undefined')
         Qt.quit();
 
-      var cursor = curScore.newCursor();
       cursor.rewind(1);
       var startStaff  = cursor.staffIdx;
       cursor.rewind(2);
