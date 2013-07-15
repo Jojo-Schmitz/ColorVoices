@@ -24,7 +24,7 @@
 // 02Jan2013 ColorVoices
 // The purpose of this plugin is to color the notes of each voice.
 
-import QtQuick 1.0
+import QtQuick 2.0
 import MuseScore 1.0
 
 
