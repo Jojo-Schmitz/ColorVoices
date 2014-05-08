@@ -6,7 +6,7 @@
 //  ColorVoices plugin
 //
 //  Copyright (C)2011 Charles Cave   (charlesweb@optusnet.com.au)
-//  Copyright (C)2012, 2013 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012 - 2014 Joachim Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -24,7 +24,7 @@
 // 02Jan2013 ColorVoices
 // The purpose of this plugin is to color the notes of each voice.
 
-import QtQuick 2.0
+import QtQuick 2.1
 import MuseScore 1.0
 
 
@@ -65,25 +65,27 @@ MuseScore {
           cursor.staffIdx = staff;
 
           if (fullScore)
-            cursor.rewind(0) // if no selection, beginning of score
+             cursor.rewind(0) // if no selection, beginning of score
 
           while (cursor.segment && (fullScore || cursor.tick < endTick)) {
-            if (cursor.element && cursor.element.type == Element.CHORD) {
-               var notes = cursor.element.notes;
-               for (var i = 0; i < notes.length; i++) {
-                  var note = notes[i];
-                  if (note.color != colors[4])
-                     note.color = colors[4];
+            if (cursor.element) {
+               var element = cursor.element;
+               if (typeof element.color !== "undefined") {
+                  if (element.color != colors[4])
+                     element.color = colors[4];
                   else
-                     note.color = colors[cursor.voice % 4];
+                     element.color = colors[cursor.voice % 4];
                }
-            }
-            else if (cursor.element && cursor.element.type == Element.REST) {
-               var rest = cursor.element;
-               if (rest.color != colors[4])
-                  rest.color = colors[4];
-               else
-                  rest.color = colors[cursor.voice % 4];
+               if (element.type == Element.CHORD) {
+                  var notes = element.notes;
+                  for (var i = 0; i < notes.length; i++) {
+                     var note = notes[i];
+                     if (note.color != colors[4])
+                        note.color = colors[4];
+                     else
+                        note.color = colors[cursor.voice % 4];
+                  }
+               }
             }
             cursor.next();
           }
