@@ -89,6 +89,19 @@ MuseScore {
                      element.color = colors[cursor.voice % 4];
                }
                if (element.type == Element.CHORD) {
+                  var graceChords = element.graceNotes;
+                  for (var i = 0; i < graceChords.length; i++) {
+                     // iterate through all grace chords
+                     var notes = graceChords[i].notes;
+                     for (var i = 0; i < notes.length; i++) {
+                        var note = notes[i];
+                        if (note.color != colors[4])
+                           note.color = colors[4];
+                        else
+                           note.color = colors[cursor.voice % 4];
+                     }
+                  }
+
                   var notes = element.notes;
                   for (var i = 0; i < notes.length; i++) {
                      var note = notes[i];
