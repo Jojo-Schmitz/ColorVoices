@@ -7,6 +7,7 @@
 //
 //  Copyright (C)2011 Charles Cave   (charlesweb@optusnet.com.au)
 //  Copyright (C)2012 - 2014 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2014 Jörn Eichler (joerneichler@gmx.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2.
@@ -21,7 +22,6 @@
 //  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //=============================================================================
 
-// 02Jan2013 ColorVoices
 // The purpose of this plugin is to color the notes of each voice.
 
 import QtQuick 2.1
