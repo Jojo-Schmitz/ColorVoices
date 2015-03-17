@@ -41,6 +41,15 @@ MuseScore {
          "#000000"  // Black
          ]
 
+   function toggleColor(element, voice) {
+      if (typeof element.color !== "undefined") {
+         if (element.color != colors[4])
+            element.color = colors[4]; // black
+         else
+            element.color = colors[voice % 4];
+      } 
+   } 
+
    onRun: {
       if (typeof curScore === 'undefined')
         Qt.quit();
@@ -82,12 +91,8 @@ MuseScore {
           while (cursor.segment && (fullScore || cursor.tick < endTick)) {
             if (cursor.element) {
                var element = cursor.element;
-               if (typeof element.color !== "undefined") {
-                  if (element.color != colors[4])
-                     element.color = colors[4];
-                  else
-                     element.color = colors[cursor.voice % 4];
-               }
+               toggleColor(element, voice);
+
                if (element.type == Element.CHORD) {
                   var graceChords = element.graceNotes;
                   for (var i = 0; i < graceChords.length; i++) {
@@ -95,20 +100,14 @@ MuseScore {
                      var notes = graceChords[i].notes;
                      for (var i = 0; i < notes.length; i++) {
                         var note = notes[i];
-                        if (note.color != colors[4])
-                           note.color = colors[4];
-                        else
-                           note.color = colors[cursor.voice % 4];
+                        toggleColor(note, voice);
                      }
                   }
 
                   var notes = element.notes;
                   for (var i = 0; i < notes.length; i++) {
                      var note = notes[i];
-                     if (note.color != colors[4])
-                        note.color = colors[4];
-                     else
-                        note.color = colors[cursor.voice % 4];
+                     toggleColor(note, voice);
                   }
                }
             }
