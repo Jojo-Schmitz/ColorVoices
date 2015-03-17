@@ -83,7 +83,7 @@ function run()
 }
 
 var mscorePlugin = {
-      menu: 'Plugins.Notes.Color voices',
+      menu: 'Plugins.Notes.Color Voices',
       init: init,
       run:  run
 };
