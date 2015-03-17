@@ -34,15 +34,17 @@ MuseScore {
    menuPath: 'Plugins.Notes.Color Voices'
 
    property variant colors : [
-         "#0000ff", // Voice 1 - Blue     0   0 255
-         "#009600", // Voice 2 - Green    0 150   0
-         "#e6b432", // Voice 3 - Yellow 230 180  50
-         "#c800c8", // Voice 4 - Purple 200   0 200
+         "#1259d0", // Voice 1 - Blue    18  89 208
+         "#009234", // Voice 2 - Green    0 146  52
+         "#c04400", // Voice 3 - Orange 192  68   0
+         "#71167a", // Voice 4 - Purple 113  22 122
          "#000000"  // Black
          ]
 
    function toggleColor(element, voice) {
-      if (typeof element.color !== "undefined") {
+      if (typeof element.color === 'undefined')
+         console.log("element type " + element.type + " doesn't have color")
+      else  {
          if (element.color != colors[4])
             element.color = colors[4]; // black
          else
@@ -82,7 +84,7 @@ MuseScore {
       for (var staff = startStaff; staff <= endStaff; staff++) {
         for (var voice = 0; voice < 4; voice++) {          
           cursor.rewind(1); // sets voice to 0
-          cursor.voice = voice; //voice has to be set after goTo
+          cursor.voice = voice; // voice has to be set after goTo
           cursor.staffIdx = staff;
 
           if (fullScore)
@@ -91,7 +93,7 @@ MuseScore {
           while (cursor.segment && (fullScore || cursor.tick < endTick)) {
             if (cursor.element) {
                var element = cursor.element;
-               toggleColor(element, voice);
+               toggleColor(element, voice); // this takes care of the rests (only!?!)
 
                if (element.type == Element.CHORD) {
                   var graceChords = element.graceNotes;
