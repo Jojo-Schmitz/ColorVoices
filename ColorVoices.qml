@@ -6,7 +6,7 @@
 //  ColorVoices plugin
 //
 //  Copyright (C)2011 Charles Cave   (charlesweb@optusnet.com.au)
-//  Copyright (C)2012 - 2014 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012 - 2015 Joachim Schmitz (jojo@schmitz-digital.de)
 //  Copyright (C)2014 Jörn Eichler (joerneichler@gmx.de)
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -30,8 +30,8 @@ import MuseScore 1.0
 
 MuseScore {
    version: "1.0"
-   description: "This plugin colors the notes of each voice"
-   menuPath: 'Plugins.Notes.Color voices'
+   description: "This plugin colors the notes and rests of each voice"
+   menuPath: 'Plugins.Notes.Color Voices'
 
    property variant colors : [
          "#0000ff", // Voice 1 - Blue     0   0 255
