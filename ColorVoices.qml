@@ -93,8 +93,15 @@ MuseScore {
           while (cursor.segment && (fullScore || cursor.tick < endTick)) {
             if (cursor.element) {
                var element = cursor.element;
-               toggleColor(element, voice); // this takes care of the rests (only!?!)
-
+               toggleColor(element, voice); // this takes care of the rests
+               if (element.stem)
+                  toggleColor(element.stem, voice)
+               if (element.hook)
+                  toggleColor(element.hook, voice)
+               if (element.beam)
+                  toggleColor(element.beam, voice)
+               if (element.stemSlash)
+                  toggleColor(element.stemSlash, voice)
                if (element.type == Element.CHORD) {
                   var graceChords = element.graceNotes;
                   for (var i = 0; i < graceChords.length; i++) {
