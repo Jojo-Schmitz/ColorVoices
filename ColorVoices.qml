@@ -6,7 +6,7 @@
 //
 //  Copyright (C)2011 Charles Cave (charlesweb@optusnet.com.au)
 //  Copyright (C)2014 Jörn Eichler (joerneichler@gmx.de)
-//  Copyright (C)2012-2015 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012-2018 Joachim Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2
@@ -14,13 +14,24 @@
 //  the file LICENCE.GPL
 //=============================================================================
 
-import QtQuick 2.2
-import MuseScore 1.0
+import QtQuick 2.9
+import QtQuick.Dialogs 1.2
+import MuseScore 3.0
 
 MuseScore {
-   version:  "1.0"
+   version:  "3.0"
    description: "This plugin colors the chords and rests of each voice"
    menuPath: "Plugins.Notes.Color Voices"
+
+  MessageDialog {
+    id: versionError
+    visible: false
+    title: qsTr("Unsupported MuseScore Version")
+    text: qsTr("This plugin needs MuseScore 3.0.2 or later")
+    onAccepted: {
+      Qt.quit()
+      }
+    }
 
    property variant colors: [
       "#1259d0", // Voice 1 - Blue    18  89 208
@@ -133,8 +144,11 @@ MuseScore {
 
    onRun: {
       console.log("Hello, Color Voices")
-      if (typeof curScore !== 'undefined')
-         applyToChordsAndRestsInSelection(colorVoices)            
+      // check MuseScore version
+      if (mscoreMajorVersion == 3 && mscoreMinorVersion == 0 && mscoreUpdateVersion <= 1)
+         versionError.open()
+      else
+         applyToChordsAndRestsInSelection(colorVoices)
       Qt.quit()
       }
 }
