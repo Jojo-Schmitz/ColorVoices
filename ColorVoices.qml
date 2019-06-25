@@ -16,6 +16,7 @@
 
 import QtQuick 2.9
 import QtQuick.Dialogs 1.2
+import Qt.labs.settings 1.0
 import MuseScore 3.0
 
 MuseScore {
@@ -33,17 +34,44 @@ MuseScore {
       }
     }
 
-   property variant colors: [
-      "#1259d0", // Voice 1 - Blue    18  89 208
-      "#009234", // Voice 2 - Green    0 146  52
-      "#c04400", // Voice 3 - Orange 192  68   0
-      "#71167a", // Voice 4 - Purple 113  22 122
-      "#000000", // black
+	Settings {
+		id: msSetVoice1
+		category: "ui/score/voice1"
+		property color color
+	}
+	Settings {
+		id: msSetVoice2
+		category: "ui/score/voice2"
+		property color color
+	}
+	Settings {
+		id: msSetVoice3
+		category: "ui/score/voice3"
+		property color color
+	}
+	Settings {
+		id: msSetVoice4
+		category: "ui/score/voice4"
+		property color color
+	}
+	Settings {
+		id: msSetScore
+		category: "ui/score"
+		property color defaultColor
+	}
+	
+   property variant defaultColors: [ //as in MuseScore 3.2
+      "#2E86AB", // Voice 1 - Blue
+      "#306B34", // Voice 2 - Green
+      "#C73E1D", // Voice 3 - Orange
+      "#8D1E4B", // Voice 4 - Purple
       ]
 
+   property variant colors: []
+
    function toggleColor(element, color) {
-      if (element.color != colors[4]) // not black?
-         element.color = colors[4] // back to black
+      if (element.color != msSetScore.defaultColor)
+         element.color = msSetScore.defaultColor
       else
          element.color = color
       }
@@ -59,8 +87,8 @@ MuseScore {
          if (element.beam) 
             // beams would need special treatment as they belong to more than
             // one chord, esp. if they belong to an even number of chords,
-            // so for now leave (or make) them black
-            toggleColor(element.beam, colors[4])
+            // so for now leave (or make) them defaultColor
+            toggleColor(element.beam, msSetScore.defaultColor)
          if (element.stemSlash) // Acciaccatura
             toggleColor(element.stemSlash, colors[voice % 4])
          }
@@ -143,7 +171,27 @@ MuseScore {
       }
 
    onRun: {
-      console.log("Hello, Color Voices")
+      console.log("Hello, Color Voices - setting colors")
+      var defaultBlack = '#000000'; //if a color setting isn't read back (because the value is at 'default') then the settings returns the default color, namely black
+      if (msSetVoice1.color == defaultBlack) {
+          msSetVoice1.color = defaultColors[0];
+      }
+      if (msSetVoice2.color == defaultBlack) {
+          msSetVoice2.color = defaultColors[1];
+      }
+      if (msSetVoice3.color == defaultBlack) {
+          msSetVoice3.color = defaultColors[2];
+      }
+      if (msSetVoice4.color == defaultBlack) {
+          msSetVoice4.color = defaultColors[3];
+      }
+      colors = [
+          msSetVoice1.color,
+          msSetVoice2.color,
+          msSetVoice3.color,
+          msSetVoice4.color
+      ];
+      console.log('Resulting colors:', colors);
       // check MuseScore version
       if (mscoreMajorVersion == 3 && mscoreMinorVersion == 0 && mscoreUpdateVersion <= 1)
          versionError.open()
