@@ -4,9 +4,10 @@
 //
 //  ColorVoices plugin
 //
-//  Copyright (C)2011 Charles Cave (charlesweb@optusnet.com.au)
-//  Copyright (C)2014 Jörn Eichler (joerneichler@gmx.de)
-//  Copyright (C)2012-2018 Joachim Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2011 Charles 'ozcaveman' Cave (charlesweb@optusnet.com.au)
+//  Copyright (C)2014 Jörn 'heuchi' Eichler (joerneichler@gmx.de)
+//  Copyright (C)2019 Johan 'jeetee' Temmerman (musescore@jeetee.net)
+//  Copyright (C)2012-2019 Joachim 'Jojo' Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2
@@ -20,7 +21,7 @@ import Qt.labs.settings 1.0
 import MuseScore 3.0
 
 MuseScore {
-   version:  "3.0"
+   version:  "3.2"
    description: "This plugin colors the chords and rests of each voice"
    menuPath: "Plugins.Notes.Color Voices"
 
@@ -60,26 +61,32 @@ MuseScore {
 		property color defaultColor
 	}
 	
-   property variant defaultColors: [ //as in MuseScore 3.2
+   property variant defaultColors_NEW: [ //as of MuseScore 3.2
       "#2E86AB", // Voice 1 - Blue
       "#306B34", // Voice 2 - Green
       "#C73E1D", // Voice 3 - Orange
       "#8D1E4B", // Voice 4 - Purple
       ]
+    property variant defaultColors_OLD: [ //prior to MuseScore 3.2
+       "#1259d0", // Voice 1 - Blue    18  89 208
+       "#009234", // Voice 2 - Green    0 146  52
+       "#c04400", // Voice 3 - Orange 192  68   0
+       "#71167a", // Voice 4 - Purple 113  22 122
+       ]
 
    property variant colors: []
 
    function toggleColor(element, color) {
-      if (element.color != msSetScore.defaultColor)
+      if (element.color !== msSetScore.defaultColor)
          element.color = msSetScore.defaultColor
       else
          element.color = color
       }
 
    function colorVoices(element, voice) {
-      if (element.type == Element.REST)
+      if (element.type === Element.REST)
          toggleColor(element, colors[voice % 4])
-      else if (element.type == Element.CHORD) {
+      else if (element.type === Element.CHORD) {
          if (element.stem)
             toggleColor(element.stem, colors[voice % 4])
          if (element.hook)
@@ -92,7 +99,7 @@ MuseScore {
          if (element.stemSlash) // Acciaccatura
             toggleColor(element.stemSlash, colors[voice % 4])
          }
-      else if (element.type == Element.NOTE) {
+      else if (element.type === Element.NOTE) {
          toggleColor(element, colors[voice % 4])
          if (element.accidental)
             toggleColor(element.accidental, colors[voice % 4])
@@ -122,7 +129,7 @@ MuseScore {
       else {
          startStaff = cursor.staffIdx
          cursor.rewind(2)
-         if (cursor.tick == 0) {
+         if (cursor.tick === 0) {
             // this happens when the selection includes
             // the last measure of the score.
             // rewind(2) goes behind the last segment (where
@@ -145,21 +152,21 @@ MuseScore {
 
             while (cursor.segment && (fullScore || cursor.tick < endTick)) {
                if (cursor.element) {
-                  if (cursor.element.type == Element.REST)
+                  if (cursor.element.type === Element.REST)
                      func(cursor.element, voice)
-                  else if (cursor.element.type == Element.CHORD) {
+                  else if (cursor.element.type === Element.CHORD) {
                      func(cursor.element, voice)
                      var graceChords = cursor.element.graceNotes;
                      for (var i = 0; i < graceChords.length; i++) {
                         // iterate through all grace chords
                         func(graceChords[i], voice)
-                        var notes = graceChords[i].notes
-                        for (var j = 0; j < notes.length; j++)
-                           func(notes[j], voice)
+                        var gnotes = graceChords[i].notes
+                        for (var j = 0; j < gnotes.length; j++)
+                           func(gnotes[j], voice)
                         }
                      var notes = cursor.element.notes
-                     for (var i = 0; i < notes.length; i++) {
-                        var note = notes[i]
+                     for (var k = 0; k < notes.length; k++) {
+                        var note = notes[k]
                         func(note, voice)
                         }
                      } // end if CHORD
@@ -172,31 +179,42 @@ MuseScore {
 
    onRun: {
       console.log("Hello, Color Voices - setting colors")
-      var defaultBlack = '#000000'; //if a color setting isn't read back (because the value is at 'default') then the settings returns the default color, namely black
-      if (msSetVoice1.color == defaultBlack) {
-          msSetVoice1.color = defaultColors[0];
-      }
-      if (msSetVoice2.color == defaultBlack) {
-          msSetVoice2.color = defaultColors[1];
-      }
-      if (msSetVoice3.color == defaultBlack) {
-          msSetVoice3.color = defaultColors[2];
-      }
-      if (msSetVoice4.color == defaultBlack) {
-          msSetVoice4.color = defaultColors[3];
-      }
-      colors = [
-          msSetVoice1.color,
-          msSetVoice2.color,
-          msSetVoice3.color,
-          msSetVoice4.color
-      ];
-      console.log('Resulting colors:', colors);
       // check MuseScore version
       if (mscoreMajorVersion == 3 && mscoreMinorVersion == 0 && mscoreUpdateVersion <= 1)
          versionError.open()
-      else
-         applyToChordsAndRestsInSelection(colorVoices)
+      var defaultBlack = "#000000"; //if a color setting isn't read back (because the value is at 'default') then the settings returns the default color, namely black
+      if (msSetVoice1.color == defaultBlack) {
+         if (mscoreMinorVersion < 2)
+            msSetVoice1.color = defaultColors_OLD[0];
+         else
+            msSetVoice1.color = defaultColors_NEW[0];
+         }
+      if (msSetVoice2.color == defaultBlack) {
+         if (mscoreMinorVersion < 2)
+            msSetVoice1.color = defaultColors_OLD[1];
+         else
+            msSetVoice2.color = defaultColors_NEW[1];
+         }
+      if (msSetVoice3.color == defaultBlack) {
+         if (mscoreMinorVersion < 2)
+            msSetVoice1.color = defaultColors_OLD[2];
+         else
+            msSetVoice3.color = defaultColors_NEW[2];
+         }
+      if (msSetVoice4.color == defaultBlack) {
+         if (mscoreMinorVersion < 2)
+            msSetVoice1.color = defaultColors_OLD[3];
+         else
+            msSetVoice4.color = defaultColors_NEW[3];
+         }
+      colors = [
+         msSetVoice1.color,
+         msSetVoice2.color,
+         msSetVoice3.color,
+         msSetVoice4.color
+         ];
+      console.log('Resulting colors:', colors);
+      applyToChordsAndRestsInSelection(colorVoices)
       Qt.quit()
       }
-}
+   }
