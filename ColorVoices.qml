@@ -7,7 +7,7 @@
 //  Copyright (C)2011 Charles 'ozcaveman' Cave (charlesweb@optusnet.com.au)
 //  Copyright (C)2014 Jörn 'heuchi' Eichler (joerneichler@gmx.de)
 //  Copyright (C)2019 Johan 'jeetee' Temmerman (musescore@jeetee.net)
-//  Copyright (C)2012-2019 Joachim 'Jojo' Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012-2023 Joachim 'Jojo' Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2
@@ -21,43 +21,52 @@ import Qt.labs.settings 1.0
 import MuseScore 3.0
 
 MuseScore {
-   version:  "3.2"
+   version:  "4.0"
    description: "This plugin colors the chords and rests of each voice"
    menuPath: "Plugins.Notes.Color Voices"
 
-  MessageDialog {
-    id: versionError
-    visible: false
-    title: qsTr("Unsupported MuseScore Version")
-    text: qsTr("This plugin needs MuseScore 3.0.2 or later")
-    onAccepted: {
-      Qt.quit()
+   id: colorvoice
+   Component.onCompleted : {
+      if (mscoreMajorVersion >= 4) {
+         colorvoice.title = "Color Voices";
+         colorvoice.categoryCode  ="color-notes";
       }
-    }
+   }
+
+
+   MessageDialog {
+      id: versionError
+      visible: false
+      title: qsTr("Unsupported MuseScore Version")
+      text: qsTr("This plugin needs MuseScore 3.0.2 or later")
+      onAccepted: {
+         quit()
+      }
+   }
 
 	Settings {
 		id: msSetVoice1
-		category: "ui/score/voice1"
+		category: mscoreMajorVersion >= 4 ? "engraving/colors/voice1" : "ui/score/voice1"
 		property color color
 	}
 	Settings {
 		id: msSetVoice2
-		category: "ui/score/voice2"
+		category: mscoreMajorVersion >= 4 ? "engraving/colors/voice2" : "ui/score/voice2"
 		property color color
 	}
 	Settings {
 		id: msSetVoice3
-		category: "ui/score/voice3"
+		category: mscoreMajorVersion >= 4 ? "engraving/colors/voice3" : "ui/score/voice3"
 		property color color
 	}
 	Settings {
 		id: msSetVoice4
-		category: "ui/score/voice4"
+		category: mscoreMajorVersion >= 4 ? "engraving/colors/voice4" : "ui/score/voice4"
 		property color color
 	}
 	Settings {
 		id: msSetScore
-		category: "ui/score"
+		category: mscoreMajorVersion >= 4 ? "engraving/colors" : "ui/score"
 		property color defaultColor
 	}
 	
@@ -141,6 +150,7 @@ MuseScore {
          endStaff = cursor.staffIdx
          }
       console.log(startStaff + " - " + endStaff + " - " + endTick)
+      curScore.startCmd()
       for (var staff = startStaff; staff <= endStaff; staff++) {
          for (var voice = 0; voice < 4; voice++) {
             cursor.rewind(1) // sets voice to 0
@@ -175,6 +185,7 @@ MuseScore {
                } // end while cursor
             } // end for loop
          } // end for loop
+      curScore.endCmd()
       }
 
    onRun: {
@@ -184,25 +195,25 @@ MuseScore {
          versionError.open()
       var defaultBlack = "#000000"; //if a color setting isn't read back (because the value is at 'default') then the settings returns the default color, namely black
       if (msSetVoice1.color == defaultBlack) {
-         if (mscoreMinorVersion < 2)
+         if (mscoreMajorVersion == 3 && mscoreMinorVersion < 2)
             msSetVoice1.color = defaultColors_OLD[0];
          else
             msSetVoice1.color = defaultColors_NEW[0];
          }
       if (msSetVoice2.color == defaultBlack) {
-         if (mscoreMinorVersion < 2)
+         if (mscoreMajorVersion == 3 && mscoreMinorVersion < 2)
             msSetVoice1.color = defaultColors_OLD[1];
          else
             msSetVoice2.color = defaultColors_NEW[1];
          }
       if (msSetVoice3.color == defaultBlack) {
-         if (mscoreMinorVersion < 2)
+         if (mscoreMajorVersion == 3 && mscoreMinorVersion < 2)
             msSetVoice1.color = defaultColors_OLD[2];
          else
             msSetVoice3.color = defaultColors_NEW[2];
          }
       if (msSetVoice4.color == defaultBlack) {
-         if (mscoreMinorVersion < 2)
+         if (mscoreMajorVersion == 3 && mscoreMinorVersion < 2)
             msSetVoice1.color = defaultColors_OLD[3];
          else
             msSetVoice4.color = defaultColors_NEW[3];
@@ -215,6 +226,6 @@ MuseScore {
          ];
       console.log('Resulting colors:', colors);
       applyToChordsAndRestsInSelection(colorVoices)
-      Qt.quit()
+      quit()
       }
    }
