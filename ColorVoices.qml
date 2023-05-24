@@ -218,6 +218,8 @@ MuseScore {
          else
             msSetVoice4.color = defaultColors_NEW[3];
          }
+      if (!msSetScore.defaultColor.valid) // needed for Mu4?
+         msSetScore.defaultColor = defaultBlack;
       colors = [
          msSetVoice1.color,
          msSetVoice2.color,
