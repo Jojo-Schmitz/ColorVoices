@@ -84,6 +84,8 @@ MuseScore {
        ]
 
    property variant colors: []
+   
+   property variant prevBeam: -1
 
    function toggleColor(element, color) {
       if (element.color !== msSetScore.defaultColor)
@@ -102,9 +104,10 @@ MuseScore {
             toggleColor(element.hook, colors[voice % 4])
          if (element.beam) 
             // beams would need special treatment as they belong to more than
-            // one chord, esp. if they belong to an even number of chords,
-            // so for now leave (or make) them defaultColor
-            toggleColor(element.beam, msSetScore.defaultColor)
+            // one chord, esp. if they belong to an even number of chords
+            if (!element.beam.is(prevBeam))
+               toggleColor(element.beam, colors[voice % 4])
+            prevBeam = element.beam
          if (element.stemSlash) // Acciaccatura
             toggleColor(element.stemSlash, colors[voice % 4])
          }
