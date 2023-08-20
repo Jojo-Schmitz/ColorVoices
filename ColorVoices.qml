@@ -30,6 +30,8 @@ MuseScore {
       "#000000", // black
       ]
 
+   property variant prevBeam: -1
+
    function toggleColor(element, color) {
       if (element.color != colors[4]) // not black?
          element.color = colors[4] // back to black
@@ -48,8 +50,9 @@ MuseScore {
          if (element.beam) 
             // beams would need special treatment as they belong to more than
             // one chord, esp. if they belong to an even number of chords,
-            // so for now leave (or make) them black
-            toggleColor(element.beam, colors[4])
+            if (element.beam !== prevBeam)
+               toggleColor(element.beam, colors[voice % 4])
+            prevBeam = element.beam
          if (element.stemSlash) // Acciaccatura
             toggleColor(element.stemSlash, colors[voice % 4])
          }
