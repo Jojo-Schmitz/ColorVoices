@@ -7,7 +7,7 @@
 //  Copyright (C)2011 Charles 'ozcaveman' Cave (charlesweb@optusnet.com.au)
 //  Copyright (C)2014 Jörn 'heuchi' Eichler (joerneichler@gmx.de)
 //  Copyright (C)2019 Johan 'jeetee' Temmerman (musescore@jeetee.net)
-//  Copyright (C)2012-2023 Joachim 'Jojo' Schmitz (jojo@schmitz-digital.de)
+//  Copyright (C)2012-2024 Joachim 'Jojo' Schmitz (jojo@schmitz-digital.de)
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License version 2
@@ -85,7 +85,7 @@ MuseScore {
 
    property variant colors: []
    
-   property variant prevBeam: -1
+   property int prevBeam: -1
 
    function toggleColor(element, color) {
       if (element.color !== msSetScore.defaultColor)
@@ -134,7 +134,7 @@ MuseScore {
    // or, if nothing is selected, in the entire score
    function applyToChordsAndRestsInSelection(func) {
       var cursor = curScore.newCursor()
-      cursor.rewind(1)
+      cursor.rewind(Cursor.SELECTION_START)
       var startStaff
       var endStaff
       var endTick
@@ -146,12 +146,12 @@ MuseScore {
          }
       else {
          startStaff = cursor.staffIdx
-         cursor.rewind(2)
+         cursor.rewind(Cursor.SELECTION_END))
          if (cursor.tick === 0) {
             // this happens when the selection includes
             // the last measure of the score.
-            // rewind(2) goes behind the last segment (where
-            // there's none) and sets tick=0
+            // rewind(Cursor.SELECTION_END)) goes behind the last segment
+            // (where there's none) and sets tick=0
             endTick = curScore.lastSegment.tick + 1
             }
          else
@@ -162,12 +162,12 @@ MuseScore {
       curScore.startCmd()
       for (var staff = startStaff; staff <= endStaff; staff++) {
          for (var voice = 0; voice < 4; voice++) {
-            cursor.rewind(1) // sets voice to 0
+            cursor.rewind(Cursor.SELECTION_START) // sets voice to 0
             cursor.voice = voice //voice has to be set after goTo
             cursor.staffIdx = staff
 
             if (fullScore)
-               cursor.rewind(0) // if no selection, beginning of score
+               cursor.rewind(Cursor.SCORE_START) // if no selection, beginning of score
 
             while (cursor.segment && (fullScore || cursor.tick < endTick)) {
                if (cursor.element) {
