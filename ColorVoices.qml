@@ -85,7 +85,7 @@ MuseScore {
 
    property variant colors: []
    
-   property int prevBeam: -1
+   property variant prevBeam: -1
 
    function toggleColor(element, color) {
       if (element.color !== msSetScore.defaultColor)
@@ -146,7 +146,7 @@ MuseScore {
          }
       else {
          startStaff = cursor.staffIdx
-         cursor.rewind(Cursor.SELECTION_END))
+         cursor.rewind(Cursor.SELECTION_END)
          if (cursor.tick === 0) {
             // this happens when the selection includes
             // the last measure of the score.
