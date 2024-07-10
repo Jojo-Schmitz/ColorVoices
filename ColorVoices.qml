@@ -21,13 +21,15 @@ import Qt.labs.settings 1.0
 import MuseScore 3.0
 
 MuseScore {
-   version:  "4.0"
+   version:  "4.4"
    description: "This plugin colors the chords and rests of each voice"
    menuPath: "Plugins.Notes.Color Voices"
 
    id: colorvoice
+   //4.4 title: "Color Voices";
+   //4.4 categoryCode: "color-notes";
    Component.onCompleted : {
-      if (mscoreMajorVersion >= 4) {
+      if (mscoreMajorVersion >= 4 && mscoreMinorVersion <= 3) {
          colorvoice.title = "Color Voices";
          colorvoice.categoryCode  ="color-notes";
       }
