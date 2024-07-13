@@ -26,12 +26,14 @@ MuseScore {
    menuPath: "Plugins.Notes.Color Voices"
 
    id: colorvoice
-   //4.4 title: "Color Voices";
-   //4.4 categoryCode: "color-notes";
+   //4.4 title: "Color Voices"
+   //4.4 thumbnailName: "color_notes.png"
+   //4.4 categoryCode: "color-notes"
    Component.onCompleted : {
       if (mscoreMajorVersion >= 4 && mscoreMinorVersion <= 3) {
          colorvoice.title = "Color Voices";
-         colorvoice.categoryCode  ="color-notes";
+         colorvoice.thumbnailName = "color_notes.png";
+         colorvoice.categoryCode = "color-notes";
       }
    }
 
