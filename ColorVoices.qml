@@ -16,8 +16,8 @@
 //=============================================================================
 
 import QtQuick 2.9
-import QtQuick.Dialogs 1.2
-import Qt.labs.settings 1.0
+//import QtQuick.Dialogs 1.2
+//import Qt.labs.settings 1.0
 import MuseScore 3.0
 
 MuseScore {
@@ -240,7 +240,7 @@ MuseScore {
          msSetVoice4.color
          ];
       console.log('Resulting colors:', colors);
-      applyToChordsAndRestsInSelection(colorVoices)
+      applyToChordsAndRestsInSelection(colorVoices);
       (typeof(quit) === 'undefined' ? Qt.quit : quit)()
       }
    }
