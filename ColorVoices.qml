@@ -125,6 +125,8 @@ MuseScore {
          toggleColor(element, colors[voice % 4])
          if (element.accidental)
             toggleColor(element.accidental, colors[voice % 4])
+         if (element.tieBack)
+            toggleColor(element.tieBack, colors[voice % 4])
          for (var i = 0; i < element.dots.length; i++) {
             if (element.dots[i])
                toggleColor(element.dots[i], colors[voice % 4])
