@@ -240,7 +240,7 @@ MuseScore {
          msSetVoice4.color
          ];
       console.log('Resulting colors:', colors);
-      applyToChordsAndRestsInSelection(colorVoices)
+      applyToChordsAndRestsInSelection(colorVoices);
       (typeof(quit) === 'undefined' ? Qt.quit : quit)()
       }
    }
