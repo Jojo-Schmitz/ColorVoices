@@ -106,6 +106,8 @@ MuseScore {
             toggleColor(element.stem, colors[voice % 4])
          if (element.hook)
             toggleColor(element.hook, colors[voice % 4])
+         if (element.articulation)
+            toggleColor(element.articulation, colors[voice % 4])
          if (element.beam) 
             // beams would need special treatment as they belong to more than
             // one chord, esp. if they belong to an even number of chords
