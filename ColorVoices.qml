@@ -108,18 +108,19 @@ MuseScore {
             toggleColor(element.hook, colors[voice % 4])
          if (element.articulation)
             toggleColor(element.articulation, colors[voice % 4])
-         if (element.beam) 
+         if (element.beam) {
             // beams would need special treatment as they belong to more than
             // one chord, esp. if they belong to an even number of chords
             if (mscoreMajorVersion == 3 && mscoreMinorVersion < 3) {
                if (element.beam !== prevBeam)
                   toggleColor(element.beam, colors[voice % 4])
                }
-            else {
+            else if (mscoreMajorVersion == 4 && mscoreMinorVersion < 5) {
                if (!element.beam.is(prevBeam))
                   toggleColor(element.beam, colors[voice % 4])
                }
             prevBeam = element.beam
+            }
          if (element.stemSlash) // Acciaccatura
             toggleColor(element.stemSlash, colors[voice % 4])
          }
